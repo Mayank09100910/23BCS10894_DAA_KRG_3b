@@ -1,0 +1,34 @@
+import java.util.*;
+
+class Solution {
+    public int latestTimeCatchTheBus(int[] buses, int[] passengers, int capacity) {
+        Arrays.sort(buses);
+        Arrays.sort(passengers);
+        Set<Integer> set = new HashSet<>();
+        for (int p : passengers) set.add(p);
+
+        int i = 0;
+        int lastBoarded = -1;
+
+        for (int bus : buses) {
+            int cap = capacity;
+            while (i < passengers.length && passengers[i] <= bus && cap > 0) {
+                lastBoarded = passengers[i];
+                i++;
+                cap--;
+            }
+            if (bus == buses[buses.length - 1]) {
+                if (cap > 0) {
+                    int t = bus;
+                    while (set.contains(t)) t--;
+                    return t;
+                } else {
+                    int t = lastBoarded - 1;
+                    while (set.contains(t)) t--;
+                    return t;
+                }
+            }
+        }
+        return -1;
+    }
+}
